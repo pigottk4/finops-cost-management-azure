@@ -1,0 +1,43 @@
+(base) bunny@Mac Project_27_Azure_FinOps % set -a; source .env; set +a
+(base) bunny@Mac Project_27_Azure_FinOps % echo ${RANDOM}
+4095
+(base) bunny@Mac Project_27_Azure_FinOps % echo ${RESOURCE_GROUP_NAME}
+rg-azure-finops
+(base) bunny@Mac Project_27_Azure_FinOps % az storage account create \
+  --name "satagtest${RANDOM}" \
+  --resource-group ${RESOURCE_GROUP_NAME} \
+  --sku Standard_LRS
+(RequestDisallowedByPolicy) Resource 'satagtest14859' was disallowed by policy. Policy identifiers: '[{"policyAssignment":{"name":"Assign Require Tag","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag"},"policyDefinition":{"name":"Require CostCenter tag on all resources","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag","version":"1.0.0"}}]'.
+Code: RequestDisallowedByPolicy
+Message: Resource 'satagtest14859' was disallowed by policy. Policy identifiers: '[{"policyAssignment":{"name":"Assign Require Tag","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag"},"policyDefinition":{"name":"Require CostCenter tag on all resources","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag","version":"1.0.0"}}]'.
+Target: satagtest14859
+Additional Information:Type: PolicyViolation
+Info: {
+    "evaluationDetails": {
+        "evaluatedExpressions": [
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "tags[CostCenter]",
+                "path": "tags[CostCenter]",
+                "targetValue": "false",
+                "operator": "Exists"
+            }
+        ]
+    },
+    "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag",
+    "policyDefinitionName": "policy-require-tag",
+    "policyDefinitionDisplayName": "Require CostCenter tag on all resources",
+    "policyDefinitionVersion": "1.0.0",
+    "policyDefinitionEffect": "deny",
+    "policyAssignmentId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag",
+    "policyAssignmentName": "assign-require-tag",
+    "policyAssignmentDisplayName": "Assign Require Tag",
+    "policyAssignmentScope": "/providers/Microsoft.Management/managementGroups/MG-FinOps",
+    "policyAssignmentParameters": {
+        "tagName": "CostCenter"
+    },
+    "policyExemptionIds": [],
+    "policyEnrollmentIds": []
+}
+(base) bunny@Mac Project_27_Azure_FinOps %

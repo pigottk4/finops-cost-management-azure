@@ -1,0 +1,85 @@
+(base) bunny@Mac Project_27_Azure_FinOps % set -a; source .env; set +a
+(base) bunny@Mac Project_27_Azure_FinOps % echo ${RANDOM}             
+28822
+(base) bunny@Mac Project_27_Azure_FinOps % echo ${RESOURCE_GROUP_NAME}
+rg-azure-finops
+(base) bunny@Mac Project_27_Azure_FinOps % az storage account create \
+  --name "saexpensivetest${RANDOM}" \
+  --resource-group ${RESOURCE_GROUP_NAME} \
+  --sku Standard_GRS
+(RequestDisallowedByPolicy) Resource 'saexpensivetest5229' was disallowed by policy. Policy identifiers: '[{"policyAssignment":{"name":"Assign Allowed Storage SKUs","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-storage-skus"},"policyDefinition":{"name":"Enforce Allowed Storage Account SKUs for Cost Control","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-allowed-storage-skus","version":"1.0.0"}},{"policyAssignment":{"name":"Assign Require Tag","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag"},"policyDefinition":{"name":"Require CostCenter tag on all resources","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag","version":"1.0.0"}}]'.
+Code: RequestDisallowedByPolicy
+Message: Resource 'saexpensivetest5229' was disallowed by policy. Policy identifiers: '[{"policyAssignment":{"name":"Assign Allowed Storage SKUs","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-storage-skus"},"policyDefinition":{"name":"Enforce Allowed Storage Account SKUs for Cost Control","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-allowed-storage-skus","version":"1.0.0"}},{"policyAssignment":{"name":"Assign Require Tag","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag"},"policyDefinition":{"name":"Require CostCenter tag on all resources","id":"/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag","version":"1.0.0"}}]'.
+Target: saexpensivetest5229
+Additional Information:Type: PolicyViolation
+Info: {
+    "evaluationDetails": {
+        "evaluatedExpressions": [
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "type",
+                "path": "type",
+                "expressionValue": "Microsoft.Storage/storageAccounts",
+                "targetValue": "Microsoft.Storage/storageAccounts",
+                "operator": "Equals"
+            },
+            {
+                "result": "False",
+                "expressionKind": "Field",
+                "expression": "Microsoft.Storage/storageAccounts/sku.name",
+                "path": "sku.name",
+                "expressionValue": "Standard_GRS",
+                "targetValue": [
+                    "Standard_LRS"
+                ],
+                "operator": "In"
+            }
+        ]
+    },
+    "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-allowed-storage-skus",
+    "policyDefinitionName": "policy-allowed-storage-skus",
+    "policyDefinitionDisplayName": "Enforce Allowed Storage Account SKUs for Cost Control",
+    "policyDefinitionVersion": "1.0.0",
+    "policyDefinitionEffect": "deny",
+    "policyAssignmentId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-storage-skus",
+    "policyAssignmentName": "assign-storage-skus",
+    "policyAssignmentDisplayName": "Assign Allowed Storage SKUs",
+    "policyAssignmentScope": "/providers/Microsoft.Management/managementGroups/MG-FinOps",
+    "policyAssignmentParameters": {
+        "listOfAllowedSKUs": [
+            "Standard_LRS"
+        ]
+    },
+    "policyExemptionIds": [],
+    "policyEnrollmentIds": []
+}Type: PolicyViolation
+Info: {
+    "evaluationDetails": {
+        "evaluatedExpressions": [
+            {
+                "result": "True",
+                "expressionKind": "Field",
+                "expression": "tags[CostCenter]",
+                "path": "tags[CostCenter]",
+                "targetValue": "false",
+                "operator": "Exists"
+            }
+        ]
+    },
+    "policyDefinitionId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyDefinitions/policy-require-tag",
+    "policyDefinitionName": "policy-require-tag",
+    "policyDefinitionDisplayName": "Require CostCenter tag on all resources",
+    "policyDefinitionVersion": "1.0.0",
+    "policyDefinitionEffect": "deny",
+    "policyAssignmentId": "/providers/Microsoft.Management/managementGroups/MG-FinOps/providers/Microsoft.Authorization/policyAssignments/assign-require-tag",
+    "policyAssignmentName": "assign-require-tag",
+    "policyAssignmentDisplayName": "Assign Require Tag",
+    "policyAssignmentScope": "/providers/Microsoft.Management/managementGroups/MG-FinOps",
+    "policyAssignmentParameters": {
+        "tagName": "CostCenter"
+    },
+    "policyExemptionIds": [],
+    "policyEnrollmentIds": []
+}
+(base) bunny@Mac Project_27_Azure_FinOps %
